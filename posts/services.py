@@ -1,11 +1,12 @@
 from users.models import User
-from django.db.models import F
+from users.utils import calculate_rank
 
 def update_user_rank(user):
     user_annotated = User.objects.with_rank_score().get(id=user.id)
     score = user_annotated.calculated_rank_score
 
-    user.rank_score = score
-    user.rank = user_annotated.calculate_rank()
+    current_rank, next_rank, points_to_next, progress = calculate_rank(score)
 
-    user.save(update_fields=["rank_score", "rank"])
+    user.rank_score = score
+
+    user.save(update_fields=["rank_score",])
