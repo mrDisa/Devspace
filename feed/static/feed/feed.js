@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentInput = document.getElementById("new-post-content");
   const sBtn = document.getElementById("submit-post-btn");
   const postError = document.getElementById("post-error");
-  console.log(postError);
+
 
   [titleInput, contentInput].forEach((el) => {
     el.addEventListener("keydown", (e) => {
@@ -179,10 +179,109 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     }
   }
+  // Top Week
+  async function loadTopUsers() {
+  const container = document.getElementById("top-users-container");
+  if (!container) return;
+
+  try {
+    const res = await authFetch("/api/v1/users/top-week/", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+
+    if (!res.ok) {
+      console.error("top-week response not ok:", res.status);
+      return;
+    }
+
+    const data = await res.json();
+    console.log("TOP USERS RAW:", data);
+
+    const users = Array.isArray(data) ? data : data.results;
+
+    if (!Array.isArray(users)) {
+      console.error("top users is not array:", users);
+      return;
+    }
+
+    container.innerHTML = "";
+
+    users.forEach((u, index) => {
+      if (!u) return;
+
+      const profileUrl = `/profile/${u.id}/`;
+
+      const badge =
+        index === 0 ? "ЛУЧШИЙ" :
+        index === 1 ? "ТОП" :
+        index === 2 ? "🔥" : "";
+
+      const username = u.username || "user";
+      const firstName = u.first_name || username;
+
+      const avatarHtml = u.avatar
+        ? `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;">`
+        : `<div style="
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#ffffff;
+            color:#000;
+            font-weight:700;
+            font-size:16px;
+            border-radius:50%;
+          ">
+            ${username.charAt(0).toUpperCase()}
+          </div>`;
+
+      const div = document.createElement("div");
+      div.className = "top-user-card";
+
+      div.innerHTML = `
+        <div class="top-user-left" style="cursor:pointer; display:flex; align-items:center; gap:10px; min-width:0;">
+
+          <a href="${profileUrl}" 
+             style="width:38px;height:38px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#000;font-weight:bold;flex-shrink:0;">
+            ${avatarHtml}
+          </a>
+
+          <div class="user-details">
+
+            <a href="${profileUrl}" style="text-decoration:none; color:#fff; font-weight:600;">
+              ${firstName}
+            </a>
+
+            <div>
+              <a href="${profileUrl}" style="text-decoration:none; color:#8b8b9b; font-size:12px;">
+                @${username}
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="top-user-right">
+          <div style="color:#fff;font-weight:600;font-size:12px;">
+            ${Math.round(u.rank_score || 0)} REP
+          </div>
+          ${badge ? `<div class="top-user-badge">${badge}</div>` : ""}
+        </div>
+      `;
+
+      container.appendChild(div);
+    });
+
+  } catch (e) {
+    console.error("top users error:", e);
+  }
+}
 
   let nextPostsUrl = "/api/v1/feed/";
   let isFetchingPosts = false;
-
   async function fetchPosts() {
     if (!nextPostsUrl || isFetchingPosts) return;
 
@@ -213,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     isFetchingPosts = false;
   }
-
+  
   window.addEventListener("scroll", () => {
     if (
       window.innerHeight + window.scrollY >=
@@ -306,11 +405,13 @@ document.addEventListener("DOMContentLoaded", () => {
     postError.style.display = "block";
   }
 });
-
   loadMyProfile();
   fetchPosts();
+  setInterval(() => {
+    loadTopUsers();
+  }, 60000);
+  loadTopUsers();
 
-  // ИЗМЕНЕНО: Запускаем скрипты уведомлений и выпадающего меню
   if (typeof initNotifications === "function") initNotifications(accessToken);
   if (typeof initUserMenu === "function") initUserMenu();
 });

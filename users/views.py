@@ -65,5 +65,10 @@ class LeaderboardAPIView(generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        return User.objects.with_rank_score().order_by("-rank_score")[:10]
+        return User.objects.with_rank_score().order_by("-rank_score")[:100]
     
+class TopWeekAPIView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.with_rank_score().order_by("-rank_score")[:5]

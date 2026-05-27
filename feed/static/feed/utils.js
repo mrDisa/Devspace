@@ -17,7 +17,7 @@ function getCookie(name) {
 async function refreshToken() {
   const refresh = localStorage.getItem("refresh_token");
 
-  const res = await fetch("/api/token/refresh/", {
+  const res = await fetch("/api/v1/token/refresh/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refresh }),
@@ -75,7 +75,8 @@ function createPostElement(post, accessToken) {
   const author = post.author || {};
   const authorName = author.first_name || author.username || "User";
   const authorId = author.id || "";
-  const profileUrl = authorId ? `/profile/${authorId}/` : "#";
+  const profileUrl = author.id ? `/profile/${author.id}/` : "#";
+  const username = author.username || "user";
 
   const ratingAvg = post.rating_avg || 0;
   const ratingCount = post.rating_count || 0;
@@ -181,9 +182,22 @@ function createPostElement(post, accessToken) {
         <div class="post-user-info" style="display: flex; align-items: center; gap: 12px; width: 100%;">
 
           <!-- Avatar -->
-          <div class="avatar" style="width: 44px; height: 44px; background: #ffffff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">
+          <a href="${profileUrl}" style="
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            color:#000;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:bold;
+            font-size:18px;
+            text-decoration:none;
+            overflow:hidden;
+            flex-shrink:0;
+          ">
             ${avatarHtml}
-          </div>
+          </a>
 
           <!-- Name block -->
           <div style="display: flex; flex-direction: column;">
@@ -209,9 +223,9 @@ function createPostElement(post, accessToken) {
 
         </div>
 
-            <div style="color: #8b8b9b; font-size: 13px;">
-              @${author.username || "user"}
-            </div>
+            <a href="${profileUrl}" style="color: #8b8b9b; font-size: 13px; text-decoration:none;">
+              @${username}
+            </a>
             
           </div>
 
@@ -481,7 +495,7 @@ document.addEventListener("click", () => {
 
     commentsListWrapper.prepend(tempDiv);
     inpC.value = "";
-    
+
     try {
       const res = await authFetch("/api/v1/comments/", {
         method: "POST",

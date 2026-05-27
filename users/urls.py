@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    TopWeekAPIView,
     UserAPIList, 
     UserDetailView,
     UserFollowingListView, 
@@ -18,4 +19,5 @@ urlpatterns = [
     path('<int:pk>/posts/', UserPostsListView.as_view(), name='api_user_posts'),
     path('<int:user_id>/followers/', UserFollowersListView.as_view(), name='api_user_followers'),
     path('<int:pk>/following/', UserFollowingListView.as_view(), name='api_user_followers'),
+    path('top-week/', TopWeekAPIView.as_view(), name='api_topweek')
 ]
