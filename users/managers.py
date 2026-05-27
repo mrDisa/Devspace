@@ -14,22 +14,22 @@ class UserQuerySet(models.QuerySet):
     def with_rank_score(self):
         return self.annotate(
             posts_count=Count("posts", distinct=True),
-            comments_count=Count("comments", distinct=True),
+            posts_comments=Count("posts__comments", distinct=True),
 
             total_post_likes=Count("posts__likes", distinct=True),
             total_comment_likes=Count("comments__likes", distinct=True),
             total_post_score=Coalesce(
-                Sum("posts__score"),
+                Sum("posts__score", distinct=True),
                 Value(0.0)
             ),
         ).annotate(
             calculated_rank_score=ExpressionWrapper(
                 (   
-                    F("total_post_score") * 80 +
+                    F("total_post_score") * 300 +
                     F("posts_count") * 5 +
-                    F("comments_count") * 3 +
+                    F("posts_comments") * 0.5 +
                     F("total_post_likes") * 2 +
-                    F("total_comment_likes") * 1
+                    F("total_comment_likes") * 0.2
                 ),
                 output_field=FloatField()
             )

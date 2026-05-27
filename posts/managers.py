@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import F, FloatField, ExpressionWrapper
-from django.db.models.functions import Coalesce, Extract, Now, Ln, Exp
+from django.db.models.functions import Coalesce, Extract, Now, Ln, Exp, Log
 
 
 class PostQuerySet(models.QuerySet):

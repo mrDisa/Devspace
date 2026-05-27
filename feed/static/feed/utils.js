@@ -187,15 +187,32 @@ function createPostElement(post, accessToken) {
 
           <!-- Name block -->
           <div style="display: flex; flex-direction: column;">
-            <div style="font-weight: 600; font-size: 15px;">
-              <a href="${profileUrl}" style="text-decoration:none; color:#ffffff;">
-                ${authorName}
-              </a>
-            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+  
+          <a href="${profileUrl}" style="text-decoration:none; color:#ffffff; font-weight:600; font-size:15px;">
+            ${authorName}
+          </a>
+
+          ${author.current_rank ? `
+            <span style="
+              font-size:11px;
+              padding:2px 8px;
+              border-radius:999px;
+              background:#1b1b22;
+              color:${author.rank_color || "#7c8cff"};
+              border:1px solid rgba(255,255,255,0.08);
+              white-space:nowrap;
+            ">
+              ${author.current_rank}
+            </span>
+          ` : ""}
+
+        </div>
 
             <div style="color: #8b8b9b; font-size: 13px;">
               @${author.username || "user"}
             </div>
+            
           </div>
 
           <!-- RIGHT BLOCK (VALUE + RATING) -->
@@ -464,7 +481,7 @@ document.addEventListener("click", () => {
 
     commentsListWrapper.prepend(tempDiv);
     inpC.value = "";
-
+    
     try {
       const res = await authFetch("/api/v1/comments/", {
         method: "POST",

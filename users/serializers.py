@@ -1,7 +1,20 @@
 from rest_framework import serializers
+
 from .utils import calculate_rank
 from users.models import User
 from interactions.models import Follow  # Импортируем модель подписок
+from users.utils import calculate_rank
+
+RANK_COLORS = [
+        (6000, "#ff5f5f"),
+        (4000, "#ffb84d"),
+        (2500, "#9b6bff"),
+        (1500, "#7c8cff"),
+        (800, "#4f8cff"),
+        (300, "#3ddc97"),
+        (100, "#7ad3ff"),
+        (0, "#8b8b9b"),
+    ]
 
 class UserSerializer(serializers.ModelSerializer):
     # Ранги
@@ -9,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
     next_rank = serializers.SerializerMethodField()
     points_to_next = serializers.SerializerMethodField()
     progress = serializers.SerializerMethodField()
+    rank_color = serializers.SerializerMethodField()
 
     # Подписки
     is_followed = serializers.SerializerMethodField()
@@ -28,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
             'id', 'username', 'first_name', 'email', 'password', 
             'job', 'bio', 'avatar','rank_score', 'current_rank', 'next_rank', 'points_to_next', 'progress', 'is_followed', 'followers_count', 
             'posts_count', 'comments_count', 'total_post_likes', 'total_comment_likes', 
-            'total_post_score',
+            'total_post_score', 'rank_color'
 
         ]
         extra_kwargs = {
@@ -36,6 +50,14 @@ class UserSerializer(serializers.ModelSerializer):
             'job': {'required': False},
             'bio': {'required': False},
         }
+
+    def get_rank_color(self, obj):
+        score = obj.rank_score
+
+        return next(
+            color for threshold, color in RANK_COLORS
+            if score >= threshold
+        )
 
     # Показываем поля в API
     # ПОДПИСКИ 

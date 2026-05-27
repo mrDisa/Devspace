@@ -199,151 +199,215 @@
       </aside>
 
       <main class="feed">
+    <div
+    class="profile-header"
+    style="
+      background: #ffffff05;
+      padding: 32px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      border: 1px solid #ffffff0d;
+    "
+  >
+
+    <!-- TOP -->
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        gap: 16px;
+      "
+    >
+
+      <!-- LEFT -->
+      <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+
         <div
-          class="profile-header"
+          id="profile-avatar-big"
+          class="avatar"
           style="
-            background: #ffffff05;
-            padding: 40px;
-            border-radius: 24px;
-            margin-bottom: 0;
-            text-align: center;
-            border: 1px solid #ffffff0d;
+            width: 72px;
+            height: 72px;
+            font-size: 28px;
+            background: #ffffff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
           "
         >
-          <div
-            id="profile-avatar-big"
-            class="avatar"
-            style="
-              width: 100px;
-              height: 100px;
-              font-size: 40px;
-              margin: 0 auto 20px;
-              background: #ffffff;
-              color: #000000;
-              overflow: hidden;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-            ?
-          </div>
-          <h1 id="profile-name" style="margin-bottom: 8px">...</h1>
-          <p
-            id="profile-job"
-            style="
-              color: #8b8b9b;
-              margin-bottom: 16px;
-              font-weight: 500;
-              font-size: 14px;
-            "
-          >
-            ...
-          </p>
-          <p
-            id="profile-bio"
-            style="
-              color: #cccccc;
-              font-size: 14px;
-              max-width: 500px;
-              margin: 0 auto 24px;
-              line-height: 1.6;
-            "
-          >
-            ...
-          </p>
+          ?
+        </div>
 
-          <div
+        <div style="display: flex; flex-direction: column; min-width: 0;">
+          <h1
+            id="profile-name"
             style="
-              display: flex;
-              justify-content: center;
-              gap: 40px;
+              margin: 0;
+              font-size: 20px;
+              font-weight: 600;
+              line-height: 1.2;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+          >
+            ...
+          </h1>
+
+          <p
+            id="profile-username"
+            style="
+              margin: 4px 0 0 0;
               color: #8b8b9b;
               font-size: 13px;
-              text-transform: uppercase;
             "
           >
-            <div>
-              <b
-                id="posts-count"
-                style="
-                  color: #ffffff;
-                  font-size: 1.4em;
-                  display: block;
-                  margin-bottom: 4px;
-                "
-                >0</b
-              >
-              постов
-            </div>
-            <div
-              id="followers-btn"
-              style="cursor: pointer; transition: 0.2s"
-              onmouseover="this.style.opacity = '0.7'"
-              onmouseout="this.style.opacity = '1'"
-            >
-              <b
-                id="followers-count"
-                style="
-                  color: #ffffff;
-                  font-size: 1.4em;
-                  display: block;
-                  margin-bottom: 4px;
-                "
-                >0</b
-              >
-              рубликов
-            </div>
-          </div>
-
-          <div
-            style="
-              display: flex;
-              justify-content: center;
-              gap: 12px;
-              margin-top: 24px;
-            "
-          >
-            <button
-              id="edit-profile-btn"
-              style="
-                display: none;
-                width: 100%;
-                max-width: 280px;
-                height: 48px;
-                background: #ffffff;
-                color: #000000;
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 15px;
-                transition: 0.2s;
-              "
-            >
-              Редактировать профиль
-            </button>
-            <button
-              id="follow-btn"
-              style="
-                display: none;
-                width: 100%;
-                max-width: 280px;
-                height: 48px;
-                background: #ffffff;
-                color: #000000;
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 15px;
-                transition: 0.2s;
-              "
-            >
-              Подписаться
-            </button>
-          </div>
+            ...
+          </p>
         </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div
+        id="profile-rank"
+        style="display: flex; align-items: center;"
+      ></div>
+
+    </div>
+
+    <!-- JOB -->
+    <div style="margin-bottom: 14px;">
+      <div
+        style="
+          font-size: 11px;
+          color: #8b8b9b;
+          margin-bottom: 4px;
+          letter-spacing: 0.4px;
+        "
+      >
+        Должность
+      </div>
+
+      <p
+        id="profile-job"
+        style="
+          margin: 0;
+          color: #cccccc;
+          font-size: 13px;
+          font-weight: 500;
+        "
+      >
+        ...
+      </p>
+    </div>
+
+    <!-- BIO -->
+    <div style="text-align: center; margin-top: 8px;">
+      <div
+        style="
+          font-size: 16px;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 8px;
+          letter-spacing: 0.5px;
+        "
+      >
+        О себе
+      </div>
+
+      <p
+        id="profile-bio"
+        style="
+          margin: 0 auto;
+          color: #cccccc;
+          font-size: 14px;
+          line-height: 1.6;
+          max-width: 520px;
+        "
+      >
+        ...
+      </p>
+    </div>
+
+    <!-- STATS -->
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+        margin-top: 18px;
+        color: #8b8b9b;
+        font-size: 12px;
+        text-transform: uppercase;
+      "
+    >
+      <div style="text-align: center;">
+        <b id="posts-count" style="color:#fff; font-size:18px; display:block;">
+          0
+        </b>
+        постов
+      </div>
+
+      <div id="followers-btn" style="text-align: center; cursor: pointer;">
+        <b id="followers-count" style="color:#fff; font-size:18px; display:block;">
+          0
+        </b>
+        рубликов
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 16px;
+      "
+    >
+      <button
+        id="edit-profile-btn"
+        style="
+          display: none;
+          width: 260px;
+          height: 44px;
+          background: #ffffff;
+          color: #000;
+          border: none;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Редактировать профиль
+      </button>
+
+      <button
+        id="follow-btn"
+        style="
+          display: none;
+          width: 260px;
+          height: 44px;
+          background: #ffffff;
+          color: #000;
+          border: none;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+        "
+      >
+        Подписаться
+      </button>
+    </div>
+
+  </div>
 
         <h2
           style="
