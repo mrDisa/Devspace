@@ -257,9 +257,9 @@ function createPostElement(post, accessToken) {
                 color: #8b8b9b;
                 white-space: nowrap;
             ">
-              Рейтинг: ${
+              ${
                 ratingCount > 0
-                  ? `${ratingAvg.toFixed(1)} / 5 (${ratingCount} оцен${ratingCount === 1 ? "ка" : "ки"})`
+                  ? `${ratingAvg.toFixed(1)} / 5 (${ratingCount} оцен${(Math.abs(ratingCount) % 10) === 1 ? "ка" : "ки"})`
                   : "нет оценок"
               }
             </div>

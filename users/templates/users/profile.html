@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ruble - Профиль</title>
+    <title>Devspace - Профиль</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'feed/feed.css' %}" />
     <script src="{% static 'feed/utils.js' %}" defer></script>
@@ -42,6 +42,25 @@
         background: #2a2a35;
         border-radius: 10px;
       }
+      @media (max-width: 768px) {
+
+      .profile-header > div:first-child {
+        flex-direction: column !important;
+
+      }
+
+      #profile-rank {
+        margin-top: 12px;
+        align-items: center !important;
+        max-width: calc(100%);
+      }
+      .job{
+        text-align: center;
+        transform: translateY(-20px);
+      }
+
+    }
+
     </style>
   </head>
   <body>
@@ -51,7 +70,7 @@
           href="/feed/"
           style="text-decoration: none; color: inherit; outline: none"
         >
-          <div class="logo" style="margin-bottom: 32px">Ruble</div>
+          <div class="logo" style="margin-bottom: 32px">Devspace</div>
         </a>
 
         <div
@@ -283,7 +302,7 @@
     </div>
 
     <!-- JOB -->
-    <div style="margin-bottom: 14px;">
+    <div class="job" style="margin-bottom: 14px;">
       <div
         style="
           font-size: 11px;

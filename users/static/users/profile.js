@@ -97,8 +97,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       document.getElementById("current-username").textContent = me.username;
       document.getElementById("current-usertag").textContent = `@${me.username}`;
-      document.getElementById("current-avatar").textContent =
-        me.username.charAt(0).toUpperCase();
+      const currentAvatar = document.getElementById("current-avatar");
+
+      if (me.avatar) {
+        currentAvatar.innerHTML = `
+          <img
+            src="${me.avatar}"
+            style="width:100%;height:100%;object-fit:cover;border-radius:50%;"
+          >
+        `;
+      } else {
+        currentAvatar.textContent = me.username.charAt(0).toUpperCase();
+      }
 
       document.getElementById("dropdown-profile-link").href =
         `/profile/${me.id}/`;

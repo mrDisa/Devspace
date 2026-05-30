@@ -23,7 +23,7 @@ class Post(models.Model):
     objects = PostQuerySet.as_manager()
     
     def __str__(self):
-        return f"Автор: {self.author}, Заголовок поста: {self.title}"
+        return f"Автор: {self.author, self.title or f'Post #{self.id}'}"
     
 
 class PostRating(models.Model):
@@ -56,7 +56,7 @@ class Like(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user} лайкнул пост {self.post.title}"
+         return f"{self.user} лайкнул пост {(self.post.title if self.post and self.post.title else 'Без названия')}"
         
     class Meta:
         constraints = [
