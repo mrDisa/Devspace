@@ -98,16 +98,17 @@ WSGI_APPLICATION = 'rubl.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import environ
+import os
+
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "feed_db",
-        "USER": "feed_user",
-        "PASSWORD": "1234",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
+    'default': env.db(),
 }
+
+DATABASES['default']['CONN_MAX_AGE'] = 600
 
 
 # Password validation
