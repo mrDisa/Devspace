@@ -14,7 +14,7 @@
 
 ## 🎬 Демонстрация 
 
-![Demo](/rubl/docs/demo.gif)
+![Demo](docs/demo.gif)
 ---
 
 ## 📖 О проекте
