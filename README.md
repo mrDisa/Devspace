@@ -1,243 +1,278 @@
-# Ruble — Social Network for Productive Content
-![Rubl view](rublefeedview.png)
+# DevSpace
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![Django](https://img.shields.io/badge/Django-5-green)
+![DRF](https://img.shields.io/badge/DRF-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue)
+![Docker](https://img.shields.io/badge/Docker-blue)
+![Status](https://img.shields.io/badge/Status-Active-success)
 
-**Ruble** — это социальная сеть нового типа, ориентированная на распространение полезного, практического и развивающего контента без использования механизмов «дешёвого дофамина».
+> Социальная платформа для разработчиков, построенная на Django, Django REST Framework, PostgreSQL и React.
 
-Проект реализован как полноценное MVP с backend и frontend частью.
-
----
-
-## 🧠 Идея продукта
-
-Современные социальные сети (TikTok, Instagram и др.) построены на удержании внимания:
-
-* бесконечная лента
-* короткий контент
-* алгоритмы зависимости
-
-**Ruble предлагает альтернативу:**
-
-* осознанное потребление контента
-* фокус на ценности, а не на развлечении
-* отсутствие агрессивных механизмов удержания
+[🌐 Демонстрация проекта](https://in-devspace.ru) • [📦 Репозиторий GitHub](https://github.com/mrDisa/Devspace)
 
 ---
 
-## ⚙️ Технологический стек
+## 🎬 Демонстрация 
+
+![Demo](/rubl/docs/demo.gif)
+---
+
+## 📖 О проекте
+
+DevSpace — социальная платформа для разработчиков, предназначенная для публикации контента, общения и обмена опытом между участниками сообщества.
+
+Проект разрабатывается командой из двух разработчиков и представляет собой полноценное веб-приложение с frontend, backend и production-инфраструктурой.
+
+---
+
+## ✨ Возможности платформы
+
+### Пользователи
+
+* Регистрация и авторизация
+* Управление профилем пользователя
+* Система ролей и прав доступа
+
+### Социальные функции
+
+* Создание и публикация постов
+* Взаимодействие пользователей с контентом
+* Лента публикаций
+* Просмотр профилей пользователей
+
+### Администрирование
+
+* Административная панель Django
+* Управление пользователями и контентом
+* Модерация данных
+
+### Инфраструктура
+
+* Docker-окружение для разработки
+* Развёртывание на VPS-сервере
+* Reverse Proxy через Nginx
+* Gunicorn в качестве WSGI-сервера
+
+---
+
+## 🛠 Технологический стек
 
 ### Backend
 
 * Python
 * Django
 * Django REST Framework
-* Simple JWT
+* PostgreSQL
 
 ### Frontend
 
-* чистый JS, HTML, CSS
+* React
+* JavaScript
+* HTML5
+* CSS3
 
-### База данных
+### Инфраструктура
 
-* SQLite (MVP)
-* Возможность перехода на PostgreSQL
+* Docker
+* Docker Compose
+* Nginx
+* Gunicorn
+* Linux VPS
+
+### Инструменты разработки
+
+* Git
+* GitHub
 
 ---
 
 ## 🏗 Архитектура проекта
 
-Проект построен по принципу разделения доменов:
+```text
+Frontend (React)
+        │
+        ▼
+Django REST API
+        │
+        ▼
+PostgreSQL
 
-```id="9h2dgm"
-users/              # кастомная модель пользователя, auth
-posts/              # посты, лайки, комментарии
-interactions/       # подписки между пользователями
-notifications/      # система уведомлений
-search              # поиск
-feed/               # логика формирования ленты
-main/               # базовые страницы / entry point 
+Docker → Gunicorn → Nginx → VPS
+```
+
+Проект построен по клиент-серверной архитектуре, где frontend взаимодействует с backend через REST API.
+
+---
+
+## 📂 Структура проекта
+
+```text
+DevSpace/
+├── docker/nginx
+│   ├── defa
+│   ├── config/
+│   ├── requirements/
+│   └── manage.py
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── nginx/
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
 
-## 🔑 Основные функции
+## 🚀 Локальный запуск
 
-### 👤 Пользователи
+### ⚙️ Настройка переменных окружения.
 
-* регистрация и авторизация (JWT)
-* кастомная модель пользователя
-* профиль
+Перед запуском проекта необходимо создать файл `.env` в корневой директории проекта.
 
----
+Скопируйте содержимое из `.env.example`:
 
-### 📝 Посты
+```env
+SECRET_KEY=your-secret-key
 
-* создание и редактирование
-* текст + медиа
-* авторство
+DEBUG=True
 
----
+DATABASE_URL=postgresql://postgres:password@db:5432/devspace
 
-### ❤️ Лайки
+ALLOWED_HOSTS=localhost,127.0.0.1
+```
 
-* лайк / дизлайк (toggle)
-* защита от дубликатов
-* связь пользователь ↔ пост
+### Генерация SECRET_KEY
 
----
+Для генерации безопасного ключа Django выполните команду:
 
-### 💬 Комментарии
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
 
-* комментарии к постам
-* связь с пользователем и постом
+Полученный ключ вставьте в переменную:
 
----
+```env
+SECRET_KEY=generated-secret-key
+```
 
-### 🔗 Подписки (Follow)
+### Пример для dev
 
-* пользователь → пользователь
-* уникальность подписки
-* основа для feed
+```env
+DEBUG=True
 
----
+ALLOWED_HOSTS=localhost,127.0.0.1
 
-### 📰 Лента (Feed)
+DATABASE_URL=postgresql://user:password@host:5432/database_name
+```
 
-Персонализированная лента:
+### Клонирование репозитория
 
-* посты пользователей, на которых есть подписка
-* сортировка по дате (новые сверху)
-* оптимизированные запросы
+```bash
+git clone https://github.com/mrDisa/Devspace.git
+cd Devspace
+```
 
----
+### Запуск через Docker
 
-🔔 Notifications (Уведомления)
+```bash
+docker compose up --build
+```
 
-Система уведомлений информирует пользователя о событиях:
+После запуска приложение будет доступно по адресу:
 
-* новые подписчики
-* лайки
-* комментарии
-
-Функциональность:
-
-* получение списка уведомлений
-* отметка как прочитанное
-* фильтрация (в будущем)
-
----
-
-🔍 Search (Поиск)
-
-Позволяет находить:
-
-* пользователей
-* посты
-
-Возможности:
-
-* поиск по ключевым словам
-* расширение до фильтров (в будущем)
-* возможность интеграции с рекомендациями
-
-## 🔐 Аутентификация
-
-Используется JWT:
-
-* access token
-* refresh token
-* защита endpoint
-
----
-
-## 📡 API (основные endpoints)
-
-```id="0xw6jd"
-📡 API (основные endpoints)
-POST   /api/v1/auth/token/        # получить токен
-POST   /api/v1/auth/refresh/      # обновить токен
-
-GET    /api/v1/feed/                # лента
-GET    /api/v1/posts/               # список постов
-GET    /api/v1/posts/id             # пост детально
-POST   /api/v1/posts/               # создать пост
-
-POST   /api/v1/follows/           # подписка
-DELETE /api/v1/follows/{id}/      # отписка
-
-POST   /api/v1/likes/             # лайк
-DELETE /api/v1/likes/{id}/        # убрать лайк
-
-GET    /api/v1/notifications/     # список уведомлений
-
-GET    /api/v1/search/            # поиск (посты / пользователи)
+```text
+http://localhost или http://localhost:8000
 ```
 
 ---
 
-## 🧪 Состояние проекта
+## 🔌 API
 
-* ✅ MVP готов
-* ✅ Backend API реализован
-* ✅ Frontend интегрирован
-* 🔄 Проект развивается
+Backend предоставляет REST API для взаимодействия клиентской части приложения с сервером.
 
----
+Основные возможности API:
 
-## 🎯 Цели проекта
-
-* создать альтернативу "развлекательным" соц сетям
-* минимизировать отвлекающий контент
-* повысить качество информации
+* Аутентификация пользователей
+* Управление профилями
+* Работа с публикациями
+* Система прав доступа
 
 ---
 
-## 📈 Планы развития
+## ⚡ Технические задачи проекта
 
-* 🔖 Сохранённые посты
-* 📊 Рекомендательная система
-* 🧠 умный feed (без зависимости)
+В процессе разработки были реализованы:
 
----
-
-## ⚙️ Установка
-
-```bash id="iy4xfz"
-git clone https://github.com/mrDisa/Ruble.git
-
-python -m venv venv
-venv\Scripts\activate
-
-pip install -r requirements.txt
-
-python manage.py migrate
-python manage.py runserver
-```
+* Проектирование архитектуры REST API
+* Реализация аутентификации и авторизации пользователей
+* Проектирование структуры базы данных PostgreSQL
+* Контейнеризация приложения с использованием Docker
+* Настройка production-окружения на Linux VPS
+* Настройка Nginx в качестве Reverse Proxy
+* Развёртывание приложения через Gunicorn
+* Организация командной разработки с использованием Git
 
 ---
 
-## 🤝 Команда
+## 🗺 Планы развития
 
-Ruble разработан независимой командой:
-- Исавердов Даниил — Backend Developer (Django, DRF)
-- Максименко Богдан — Fullstack Developer (Django, JS, HTML, CSS)
+* [ ] Система уведомлений в реальном времени
+* [ ] Личные сообщения
+* [ ] Расширенный поиск
+* [ ] Рекомендации контента
+* [ ] Документация API
+* [ ] Автоматизированное тестирование
+* [ ] CI/CD pipeline
 
 ---
 
-## 📌 Почему Ruble
+## 👥 Команда
 
-* без клипового контента
-* без манипуляции вниманием
+### Даниил Исавердов
 
-> Контент должен развивать, а не отвлекать.
+Backend Developer
+
+* Проектирование backend-архитектуры
+* Разработка REST API
+* Работа с PostgreSQL
+* Контейнеризация приложения
+* Развёртывание проекта на VPS
+
+### Богдан Максименко
+
+Frontend Developer
+
+
+
+* Разработка клиентской части на JS
+* Пользовательский интерфейс
+* Интеграция с backend API
+
+---
+
+## 📈 Цели проекта
+
+Основная цель DevSpace — создание платформы для взаимодействия разработчиков и обмена знаниями, а также применение современных подходов к разработке веб-приложений в условиях, максимально приближенных к коммерческой разработке.
 
 ---
 
 ## 📬 Контакты
 
-Исавердов Даниил:
+### Даниил Исавердов
 
-- Telegram: [@disawithgod](https://t.me/@disawithgod) / Почта: daniil.isaverdov@gmail.com
+GitHub: [клик](https://github.com/mrDisa)
 
-Богдан Максименко:
+Telegram: [@disawithgod](https://t.me/disawithgod)
 
-- Telegram: [@Pantihen](https://t.me/@Pantihen) / Почта: bogdanmaksimenko51@gmail.com
+Email: [daniil.isaverdov@gmail.com](mailto:daniil.isaverdov@gmail.com)
+
+### Богдан Максименко
+
+GitHub: [клик](https://github.com/Pantihen)
+
+Telegram: [@Pantihen](https://t.me/Pantihen)
+
+Email: [bogdanmaksimenko51@gmail.com](mailto:bogdanmaksimenko51@gmail.com)

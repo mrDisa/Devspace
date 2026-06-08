@@ -24,7 +24,7 @@ env = environ.Env()
 environ.Env.read_env(BASE_DIR.parent / ".env")
 
 
-SECRET_KEY = env("SECRET_KEY", default=None)
+SECRET_KEY = env("SECRET_KEY")
 if not SECRET_KEY:
     raise Exception("SECRET_KEY is required")
 
@@ -69,6 +69,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
 
 AUTH_USER_MODEL = 'users.User'
 
