@@ -75,7 +75,7 @@ function createPostElement(post, accessToken) {
   const author = post.author || {};
   const authorName = author.first_name || author.username || "User";
   const authorId = author.id || "";
-  const profileUrl = author.id ? `/profile/${author.id}/` : "#";
+  const profileUrl = author.id ? `/profile/${author.username}/` : "#";
   const username = author.username || "user";
 
   const ratingAvg = post.rating_avg || 0;
@@ -119,7 +119,7 @@ function createPostElement(post, accessToken) {
     const cAuthor = c.author
       ? c.author.first_name || c.author.username
       : "User";
-    const cAuthorId = c.author ? c.author.id : "";
+    const cAuthorId = c.author ? c.author.username : "";
     const cProfileUrl = cAuthorId ? `/profile/${cAuthorId}/` : "#";
     const cLiked = c.is_liked || false;
     const cLikesCount = c.likes_count || 0;
@@ -146,7 +146,7 @@ function createPostElement(post, accessToken) {
     const fcAuthor = fc.author
       ? fc.author.first_name || fc.author.username
       : "User";
-    const fcAuthorId = fc.author ? fc.author.id : "";
+    const fcAuthorId = fc.author ? fc.author.username : "";
     const fcProfileUrl = fcAuthorId ? `/profile/${fcAuthorId}/` : "#";
     const fcLiked = fc.is_liked || false;
     const fcLikesCount = fc.likes_count || 0;

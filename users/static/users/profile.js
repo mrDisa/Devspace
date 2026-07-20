@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const urlParts = window.location.pathname.split("/").filter((p) => p !== "");
   const userIdFromUrl = urlParts[urlParts.length - 1];
+  const usernameFromUrl = window.location.pathname
+  .split("/")
+  .filter(Boolean)
+  .pop();
+
+  console.log(usernameFromUrl);
 
   const editBtn = document.getElementById("edit-profile-btn");
   const followBtn = document.getElementById("follow-btn");
@@ -111,9 +117,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       document.getElementById("dropdown-profile-link").href =
-        `/profile/${me.id}/`;
+        `/profile/${me.username}/`;
 
-      const res = await fetch(`/api/v1/users/${userIdFromUrl}/`, {
+      const res = await fetch(`/api/v1/users/${usernameFromUrl}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -324,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const avatarFile = document.getElementById("edit-avatar-input").files[0];
     if (avatarFile) fd.append("avatar", avatarFile);
 
-    await fetch(`/api/v1/users/${userIdFromUrl}/`, {
+    await fetch(`/api/v1/users/${usernameFromUrl}/`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${accessToken}`,

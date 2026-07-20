@@ -15,9 +15,9 @@ urlpatterns = [
     path('me/', UserMeView.as_view(), name='api_me'),
     
     path('', UserAPIList.as_view(), name='api_users_list'),
-    path('<int:pk>/', UserDetailView.as_view(), name='api_user_detail'),
-    path('<int:pk>/posts/', UserPostsListView.as_view(), name='api_user_posts'),
+    path('<str:username>/posts/', UserPostsListView.as_view(), name='api_user_posts'),
     path('<int:user_id>/followers/', UserFollowersListView.as_view(), name='api_user_followers'),
     path('<int:pk>/following/', UserFollowingListView.as_view(), name='api_user_followers'),
-    path('top-week/', TopWeekAPIView.as_view(), name='api_topweek')
+    path('top-week/', TopWeekAPIView.as_view(), name='api_topweek'),
+    path('<str:username>/', UserDetailView.as_view(), name='api_user_detail')
 ]

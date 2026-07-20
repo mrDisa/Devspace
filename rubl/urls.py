@@ -41,7 +41,7 @@ urlpatterns = [
     # 3. Маршруты приложений
     path('api/v1/', include('main.api.urls')),
     path('api/v1/search/', SearchView.as_view()),
-    path('profile/<int:pk>/', TemplateView.as_view(template_name='users/profile.html'), name='profile_page'),
+    path('profile/<str:username>/', TemplateView.as_view(template_name='users/profile.html'), name='profile_page'),
     path('api/v1/leaderboard/', LeaderboardAPIView.as_view()),
 
     path('api/v1/interactions/', include('interactions.urls')),

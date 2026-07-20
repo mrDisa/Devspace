@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
           '<div style="padding:10px 16px; font-size:11px; font-weight:700; color:#8b8b9b; text-transform:uppercase;">Пользователи</div>';
         users.forEach((u) => {
           html += `
-            <a href="/profile/${u.id}/" style="display:flex; align-items:center; gap:10px; padding:10px 16px; text-decoration:none; color:inherit; transition:0.2s;" onmouseover="this.style.background='#2a2a35'" onmouseout="this.style.background='transparent'">
+            <a href="/profile/${u.username}/" style="display:flex; align-items:center; gap:10px; padding:10px 16px; text-decoration:none; color:inherit; transition:0.2s;" onmouseover="this.style.background='#2a2a35'" onmouseout="this.style.background='transparent'">
               <div style="width:30px; height:30px; background:#fff; color:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${u.username[0].toUpperCase()}</div>
               <div><div style="color:#fff; font-weight:600; font-size:14px;">${u.first_name || u.username}</div><div style="color:#8b8b9b; font-size:12px;">@${u.username}</div></div>
             </a>`;
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
           '<div style="padding:10px 16px; font-size:11px; font-weight:700; color:#8b8b9b; text-transform:uppercase; border-top:1px solid #2a2a35;">Посты</div>';
         posts.forEach((p) => {
           html += `
-            <a href="/profile/${p.author.id}/#post-${p.id}" style="display:block; padding:10px 16px; text-decoration:none; color:inherit; transition:0.2s;" onmouseover="this.style.background='#2a2a35'" onmouseout="this.style.background='transparent'">
+            <a href="/profile/${p.author.username}/#post-${p.id}" style="display:block; padding:10px 16px; text-decoration:none; color:inherit; transition:0.2s;" onmouseover="this.style.background='#2a2a35'" onmouseout="this.style.background='transparent'">
               <div style="color:#fff; font-weight:600; font-size:14px; margin-bottom:2px;">${p.title || "Без заголовка"}</div>
               <div style="color:#8b8b9b; font-size:12px;">Автор: @${p.author.username}</div>
             </a>`;
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         document.getElementById("dropdown-profile-link").href =
-          `/profile/${userData.id}/`;
+          `/profile/${userData.username}/`;
       }
     } catch (e) {
       console.error(e);
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     users.forEach((u, index) => {
       if (!u) return;
 
-      const profileUrl = `/profile/${u.id}/`;
+      const profileUrl = `/profile/${u.username}/`;
 
       const badge =
         index === 0 ? "ЛУЧШИЙ" :
