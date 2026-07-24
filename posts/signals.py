@@ -7,7 +7,6 @@ from .models import Post, Like, Comment
 from interactions.models import Follow
 
 
-# === 1. СИГНАЛ: НОВЫЙ ПОСТ ===
 @receiver(post_save, sender=Post)
 def create_notification_for_new_post(sender, instance, created, **kwargs):
     print(f"\n--- [DEBUG] СИГНАЛ СРАБОТАЛ! Новый пост создан: {created} ---")
@@ -37,24 +36,21 @@ def create_notification_for_new_post(sender, instance, created, **kwargs):
             print("--- [DEBUG] Уведомления успешно сохранены в БД! ---\n")
 
 
-# === 2. СИГНАЛ: ЛАЙКИ НА ПОСТЫ И КОММЕНТАРИИ ===
 @receiver(post_save, sender=Like)
 def create_notification_for_like(sender, instance, created, **kwargs):
     if created:
         from notifications.models import Notification
         
-        # А) Если лайкнули КОММЕНТАРИЙ
         if getattr(instance, 'comment', None):
-            if instance.comment.author != instance.user:  # Не отправляем, если лайкнул сам себя
+            if instance.comment.author != instance.user: 
                 Notification.objects.create(
                     user=instance.comment.author,
                     actor=instance.user,
                     type=getattr(Notification.NotificationType, 'LIKE', 'LIKE'), 
                     text=f"@{instance.user.username} оценил(а) ваш комментарий.",
-                    post=instance.comment.post  # Прикрепляем пост, чтобы клик по уведомлению работал!
+                    post=instance.comment.post
                 )
                 
-        # Б) Если лайкнули ПОСТ
         elif getattr(instance, 'post', None):
             if instance.post.author != instance.user:
                 Notification.objects.create(
@@ -66,13 +62,11 @@ def create_notification_for_like(sender, instance, created, **kwargs):
                 )
 
 
-# === 3. СИГНАЛ: НОВЫЕ КОММЕНТАРИИ ===
 @receiver(post_save, sender=Comment)
 def create_notification_for_comment(sender, instance, created, **kwargs):
     if created:
         from notifications.models import Notification
         
-        # Уведомляем автора поста (если это не он сам написал коммент)
         if instance.post.author != instance.author:
             Notification.objects.create(
                 user=instance.post.author,
@@ -83,16 +77,14 @@ def create_notification_for_comment(sender, instance, created, **kwargs):
             )
 
 
-# === 4. СИГНАЛ: НОВЫЕ ПОДПИСКИ ===
 @receiver(post_save, sender=Follow)
 def create_notification_for_follow(sender, instance, created, **kwargs):
     if created:
         from notifications.models import Notification
         
         Notification.objects.create(
-            user=instance.following,  # Кому приходит уведомление
-            actor=instance.follower,  # Кто подписался
+            user=instance.following, 
+            actor=instance.follower,
             type=getattr(Notification.NotificationType, 'FOLLOW', 'FOLLOW'),
             text=f"@{instance.follower.username} подписался(ась) на вас.",
-            # post=None  (тут поста нет, фронтенд поймет это и сделает ссылку на профиль)
         )

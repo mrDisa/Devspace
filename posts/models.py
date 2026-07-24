@@ -4,6 +4,8 @@ from django.dispatch import receiver
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import get_object_or_404
 
+from communities.models import Community
+
 from .managers import PostQuerySet
 from users.models import User
 
@@ -19,6 +21,14 @@ class Post(models.Model):
     score = models.FloatField(default=0)
     rating_avg = models.FloatField(default=0)
     rating_count = models.IntegerField(default=0)
+
+    community = models.ForeignKey(
+        Community,
+        on_delete=models.CASCADE,
+        related_name="posts",
+        null=True,
+        blank=True,
+    )
 
     objects = PostQuerySet.as_manager()
     

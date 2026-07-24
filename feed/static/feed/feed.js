@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const data = await res.json();
-    console.log("TOP USERS RAW:", data);
 
     const users = Array.isArray(data) ? data : data.results;
 

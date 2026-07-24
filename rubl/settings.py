@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'feed',
     'users',
     'posts',
+    'communities',
     'interactions',
     'notifications',
 ]
