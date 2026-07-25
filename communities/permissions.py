@@ -13,3 +13,19 @@ class IsCommunityOwnerOrReadOnly(BasePermission):
             user=request.user,
             role=CommunityMember.Role.OWNER
         ).exists()
+
+class ManageMembers(BasePermission):
+    roles_manage_list = [
+        CommunityMember.Role.OWNER, 
+        CommunityMember.Role.ADMIN
+    ]
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+
+        return CommunityMember.objects.filter(
+            community=obj,
+            user=request.user,
+            role__in=self.roles_manage_list
+        ).exists()

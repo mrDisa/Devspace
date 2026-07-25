@@ -6,4 +6,5 @@ urlpatterns = [
     path('posts/', include('posts.posts.urls')),
     path('comments/', include('posts.comments.urls')),
     path('notifications/', include('notifications.urls')),
+    path('communities/', include('communities.urls')),
 ]

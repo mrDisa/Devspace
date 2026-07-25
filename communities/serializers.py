@@ -10,6 +10,9 @@ from users.serializers import UserSerializer
 
 class CommunitySerializer(serializers.ModelSerializer):
     member_count = serializers.SerializerMethodField(read_only=True)
+    slug = serializers.SlugField(
+        read_only=True
+    )
 
     class Meta:
         model = Community
@@ -19,21 +22,29 @@ class CommunitySerializer(serializers.ModelSerializer):
             'updated_at', 'member_count',
         ]
 
+    def get_member_count(self, obj):
+        return obj.members.count()
+
     def validate(self, attrs):
-        slug = slugify(attrs["name"])
+        if "name" in attrs:
+            slug = slugify(attrs["name"])
 
-        if Community.objects.filter(slug=slug).exists():
-            raise serializers.ValidationError({
-                "name": "Сообщество с таким названием уже существует."
-            })
+            queryset = Community.objects.filter(slug=slug)
 
-        attrs["slug"] = slug
+            if self.instance:
+                queryset = queryset.exclude(id=self.instance.id)
+
+            if queryset.exists():
+                raise serializers.ValidationError({
+                    "name": "Сообщество с таким названием уже существует."
+                })
+
+            attrs["slug"] = slug
+
         return attrs
 
 
 class CommunityMemberSerializer(serializers.ModelSerializer):
-    my_role = serializers.SerializerMethodField()
-
     class Meta:
         model = CommunityMember
-        fields = ['community', 'user', 'role', 'joined_at', 'my_role']
+        fields = ['community', 'user', 'role', 'joined_at',]
