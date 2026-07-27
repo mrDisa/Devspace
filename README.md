@@ -6,7 +6,7 @@
 ![Docker](https://img.shields.io/badge/Docker-blue)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-> Социальная платформа для разработчиков, построенная на Django, Django REST Framework, PostgreSQL и React.
+> Социальная платформа для разработчиков, построенная на Django, Django REST Framework, PostgreSQL и Javascript.
 
 [🌐 Демонстрация проекта](https://in-devspace.ru) • [📦 Репозиторий GitHub](https://github.com/mrDisa/Devspace)
 
@@ -66,8 +66,7 @@ DevSpace — социальная платформа для разработчи
 
 ### Frontend
 
-* React
-* JavaScript
+* Javascript 
 * HTML5
 * CSS3
 
@@ -89,7 +88,7 @@ DevSpace — социальная платформа для разработчи
 ## 🏗 Архитектура проекта
 
 ```text
-Frontend (React)
+Frontend (Javascript)
         │
         ▼
 Django REST API
@@ -108,21 +107,33 @@ Docker → Gunicorn → Nginx → VPS
 
 ```text
 DevSpace/
-├── docker/nginx
-│   ├── defa
-│   ├── config/
-│   ├── requirements/
-│   └── manage.py
+├── communities/          # Сообщества, участники, роли и управление ими
+├── docker/
+│   └── nginx/            # Конфигурация Nginx
+├── docs/                 # Документация проекта
+├── feed/                 # Лента проектов и алгоритм рекомендаций
+├── interactions/         # Лайки, оценки, подписки и взаимодействия
+├── main/                 # Общие настройки API и маршрутизация
+├── media/                # Загруженные пользователями файлы
+├── notifications/        # Система уведомлений
+├── posts/                # Проекты, посты и комментарии
+├── core/                 # Конфигурация Django-проекта
+├── staticfiles/          # Собранные статические файлы
+├── users/                # Пользователи, профили и аутентификация
 │
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── nginx/
+├── .dockerignore
+├── .env
+├── .env.example
+├── .gitignore
 ├── docker-compose.yml
-└── README.md
+├── Dockerfile
+├── entrypoint.sh
+├── LICENSE
+├── manage.py
+├── README.md
+└── requirements.txt
 ```
+
 
 ---
 
@@ -166,6 +177,8 @@ DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 
 DATABASE_URL=postgresql://user:password@host:5432/database_name
+
+ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 
 ### Клонирование репозитория
@@ -221,6 +234,8 @@ Backend предоставляет REST API для взаимодействия 
 
 * [ ] Система уведомлений в реальном времени
 * [ ] Личные сообщения
+* [ ] Проекты (интеграция Github)
+* [ ] Обсуждения / solving problems
 * [ ] Расширенный поиск
 * [ ] Рекомендации контента
 * [ ] Документация API
