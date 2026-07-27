@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from .views import FeedView, MainFeed
 
-from rubl import settings
+from core import settings
 
 urlpatterns = [
     path('', FeedView.as_view()),
