@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
 
 :root {
-  --bg-color: #0f0f14;
+  --bg-color: #05050b;
   --panel-bg: transparent;
   --border-color: rgba(255, 255, 255, 0.08);
   --text-main: #ffffff;
@@ -496,7 +496,7 @@ body {
 
   padding: 0 14px !important;
 
-  background: #0f0f14 !important;
+  background: #05050b !important;
   border-bottom: 1px solid var(--border-color);
 
   z-index: 9999;

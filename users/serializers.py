@@ -4,17 +4,7 @@ from .utils import calculate_rank
 from users.models import User
 from interactions.models import Follow  # Импортируем модель подписок
 from users.utils import calculate_rank
-
-RANK_COLORS = [
-        (6000, "#ff5f5f"),
-        (4000, "#ffb84d"),
-        (2500, "#9b6bff"),
-        (1500, "#7c8cff"),
-        (800, "#4f8cff"),
-        (300, "#3ddc97"),
-        (100, "#7ad3ff"),
-        (0, "#8b8b9b"),
-    ]
+from users.constants import RANK_COLORS
 
 class UserSerializer(serializers.ModelSerializer):
     # Ранги

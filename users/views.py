@@ -1,20 +1,36 @@
+# Django
 from django.shortcuts import render
 from django.db.models import F, FloatField, ExpressionWrapper
 
+# REST
 from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+# Local: 
 from posts.models import Post
 from posts.serializers import PostSerializer
 from users.serializers import UserSerializer
 from users.models import User
 from interactions.models import Follow  # Импортируем модель подписок
 from interactions.permissions import IsOwnerOrReadOnly
+from users.services import create_email_verification, send_email_verification
 
 class UserRegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+
+        verification = create_email_verification(
+            user=user
+        )
+
+        send_email_verification(
+            user=user,
+            code=verification.code
+        )
 
 class UserAPIList(generics.ListAPIView):
     queryset = User.objects.all()

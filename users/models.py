@@ -14,3 +14,16 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.username
+
+class EmailVerification(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="email_verifications"
+    )
+
+    code = models.CharField(max_length=6)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    expires_at = models.DateTimeField()
