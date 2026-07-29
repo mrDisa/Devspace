@@ -8,7 +8,7 @@ from main import views
 from feed.views import FeedAPIView, FeedFollowsAPIView, FeedView
 from interactions.views import SearchView
 from users.views import LeaderboardAPIView
-from . import settings
+from core import settings
 from django.views.generic import RedirectView
 
 from rest_framework_simplejwt.views import (
@@ -24,9 +24,9 @@ urlpatterns = [
     # === СТРАНИЦЫ ДЛЯ ЛЮДЕЙ (HTML) ===
     # path('', views.mainView, name='main'),
     path('feed/', FeedView, name='feed'),
-    # Наши новые красивые ссылки для авторизации
     path('signup/', TemplateView.as_view(template_name='users/register.html'), name='signup_page'),
     path('login/', TemplateView.as_view(template_name='users/login.html'), name='login_page'),
+    path('profile/<str:username>/', TemplateView.as_view(template_name='users/profile.html'), name='profile_page'),
 
     # === API ЭНДПОИНТЫ (Для работы JS и базы данных) ===
     
@@ -41,9 +41,7 @@ urlpatterns = [
     # 3. Маршруты приложений
     path('api/v1/', include('main.api.urls')),
     path('api/v1/search/', SearchView.as_view()),
-    path('profile/<str:username>/', TemplateView.as_view(template_name='users/profile.html'), name='profile_page'),
     path('api/v1/leaderboard/', LeaderboardAPIView.as_view()),
-
     path('api/v1/interactions/', include('interactions.urls')),
     path('api/v1/notifications/', include('notifications.urls')),
 ]

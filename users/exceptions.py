@@ -9,5 +9,10 @@ class VerificationExpired(APIException):
 
 class InvalidVerificationCode(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
-    default_detail = "Неправильный код, попробуйте снова."
+    default_detail = "Неправильный код, попробуйте снова или получите новый."
     default_code = "invalid_verification_code"
+
+class EmailAlreadyVerified(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Почта уже подтверждена."
+    default_code = "email_already_verified"
