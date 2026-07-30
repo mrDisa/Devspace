@@ -178,7 +178,6 @@ ALLOWED_HOSTS=localhost,127.0.0.1
 
 DATABASE_URL=postgresql://user:password@host:5432/database_name
 
-ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 
 ### Клонирование репозитория
