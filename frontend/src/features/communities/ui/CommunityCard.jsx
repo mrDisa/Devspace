@@ -1,0 +1,6 @@
+import { Users, FileText, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Avatar, Badge, Button, Card } from '../../../shared/ui';
+import { routes } from '../../../shared/config/routes';
+
+export function CommunityCard({ community, onJoin }) { const role = community.current_role; return <Card className="community-card">{community.banner ? <img className="community-card__banner" src={community.banner} alt=""/> : <div className="community-card__banner"/>}<div className="community-card__body"><Link to={routes.community(community.slug)} className="community-card__heading"><Avatar user={{ avatar: community.avatar, username: community.name }} size="md"/><span><h2>{community.name}</h2><small>/c/{community.slug}</small></span></Link><p>{community.description || 'У сообщества пока нет описания.'}</p><div className="community-card__meta"><span><Users size={15}/>{community.member_count} участников</span><span><FileText size={15}/>{community.post_count} постов</span></div><div className="community-card__footer">{role && role !== 'member' ? <Badge tone="accent"><ShieldCheck size={12}/>{role}</Badge> : <span/>}<Button variant={community.is_joined ? 'secondary' : 'primary'} onClick={() => onJoin(community)}>{community.is_joined ? 'Вы участник' : 'Вступить'}</Button></div></div></Card>; }

@@ -11,6 +11,8 @@ from posts.models import Post
 from posts.serializers import PostSerializer
 from users.serializers import UserSerializer
 from users.models import User
+from communities.models import Community
+from communities.serializers import CommunitySerializer
 from .permissions import IsOwnerOrReadOnly
 from .serializers import FollowSerializer
 from .models import Follow
@@ -20,8 +22,11 @@ class SearchView(APIView):
     def get(self, request):
         query = request.query_params.get("q", "")
 
+        if not query.strip():
+            return Response({"users": [], "posts": [], "communities": []})
+
         users = User.objects.filter(username__icontains=query)[:5]
-        
+
         posts = (
             Post.objects
             .with_score()
@@ -32,9 +37,14 @@ class SearchView(APIView):
             .order_by('-score')[:5]
         )
 
+        communities = Community.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )[:5]
+
         return Response({
-            "users": UserSerializer(users, many=True).data,
-            "posts": PostSerializer(posts, many=True).data,
+            "users": UserSerializer(users, many=True, context={"request": request}).data,
+            "posts": PostSerializer(posts, many=True, context={"request": request}).data,
+            "communities": CommunitySerializer(communities, many=True, context={"request": request}).data,
         })
 
 # Follows 

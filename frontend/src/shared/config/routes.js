@@ -1,0 +1,1 @@
+export const routes = { feed: '/feed', login: '/login', signup: '/signup', profile: (username) => `/profile/${username}`, profileEdit: '/settings/profile', notifications: '/notifications', communities: '/communities', communityNew: '/communities/new', community: (slug) => `/communities/${slug}`, communityManage: (slug) => `/communities/${slug}/manage`, settings: '/settings' };

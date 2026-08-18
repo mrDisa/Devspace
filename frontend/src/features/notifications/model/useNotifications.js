@@ -1,0 +1,2 @@
+import { useCallback, useEffect, useState } from 'react'; import { notificationsApi } from '../api/notificationsApi';
+export function useNotifications() { const [items, setItems] = useState([]); const load = useCallback(() => notificationsApi.list().then(({ data }) => setItems(data.results || data)).catch(() => {}), []); useEffect(() => { load(); }, [load]); return { items, unread: items.filter((item) => !item.is_read).length, reload: load }; }

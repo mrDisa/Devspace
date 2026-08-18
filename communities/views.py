@@ -1,5 +1,6 @@
 ## Django 
 from django.db import transaction
+from django.db.models import Count, Q
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 
@@ -15,12 +16,24 @@ from communities.permissions import IsCommunityOwnerOrReadOnly, ManageMembers
 from communities.serializers import CommunityMemberSerializer, CommunitySerializer
 from communities.services import change_member_role, join_community, kick_member_community, leave_community
 from users.models import User
+from posts.models import Post
+from posts.serializers import PostSerializer
 
 
 class CommunityListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Community.objects.all()
     serializer_class = CommunitySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Community.objects.all().annotate(
+            members_total=Count("members", distinct=True),
+            posts_total=Count("posts", distinct=True),
+        )
+        query = self.request.query_params.get("q", "").strip()
+        if query:
+            queryset = queryset.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        sort = self.request.query_params.get("sort", "popular")
+        return queryset.order_by("-created_at") if sort == "new" else queryset.order_by("-members_total", "-posts_total", "name")
 
     @transaction.atomic
     def perform_create(self, serializer):
@@ -88,7 +101,16 @@ class CommunityMemberListAPIView(generics.ListAPIView):
             slug=self.kwargs["slug"]
         )
 
-        return community.members.all()
+        return community.members.select_related("user").order_by("role", "joined_at")
+
+
+class CommunityPostListAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        community = get_object_or_404(Community, slug=self.kwargs["slug"])
+        return Post.objects.with_score().filter(community=community).order_by("-created_at")
 
 class CommunityMemberRoleAPIView(APIView):
     permission_classes = [IsAuthenticated, ManageMembers]

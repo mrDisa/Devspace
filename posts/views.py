@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 
 # Local
 from interactions.permissions import IsOwnerOrReadOnly
+from communities.models import CommunityMember
 from .services import update_user_rank
 from .models import Comment, Like, Post
 from .serializers import CommentSerializer, PostRatingSerializer, PostSerializer
@@ -41,6 +42,14 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Post.objects.with_score()
+
+    def check_object_permissions(self, request, obj):
+        if request.method == "DELETE" and obj.community_id and CommunityMember.objects.filter(
+            community=obj.community, user=request.user,
+            role__in=[CommunityMember.Role.OWNER, CommunityMember.Role.ADMIN, CommunityMember.Role.MODERATOR],
+        ).exists():
+            return
+        super().check_object_permissions(request, obj)
 
 
 class MyPostsView(generics.ListAPIView):
@@ -134,6 +143,14 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def check_object_permissions(self, request, obj):
+        if request.method == "DELETE" and obj.post.community_id and CommunityMember.objects.filter(
+            community=obj.post.community, user=request.user,
+            role__in=[CommunityMember.Role.OWNER, CommunityMember.Role.ADMIN, CommunityMember.Role.MODERATOR],
+        ).exists():
+            return
+        super().check_object_permissions(request, obj)
 
 
 class CommentLikeToggleView(APIView):
