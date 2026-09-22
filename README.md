@@ -4,11 +4,11 @@
 ![DRF](https://img.shields.io/badge/DRF-red)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue)
 ![Docker](https://img.shields.io/badge/Docker-blue)
-![Status](https://img.shields.io/badge/Status-Active-success)
+![Status](https://img.shields.io/badge/Status-inactive-red)
 
 > Социальная платформа для разработчиков, построенная на Django, Django REST Framework, PostgreSQL и Javascript.
 
-[🌐 Демонстрация проекта](https://in-devspace.ru) • [📦 Репозиторий GitHub](https://github.com/mrDisa/Devspace)
+[📦 Репозиторий GitHub](https://github.com/mrDisa/Devspace)
 
 ---
 
